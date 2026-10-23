@@ -14,4 +14,4 @@ server/   Express API
 - `npm install` — install all dependencies (npm workspaces)
 - `npm run dev` — run the client (http://localhost:5173) and server (http://localhost:5001) together; `/api` requests are proxied to Express
 - `npm run build` — build the React app to `client/dist`
-- `npm start` — serve the built app and API from Express on port 5001
+- `npm start` — same as `npm run dev`: starts the local staging site at http://localhost:5173
