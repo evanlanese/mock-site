@@ -14,3 +14,33 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.options {
+  display: flex;
+  gap: 12px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.widgets {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.widgets li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.widget-page {
+  width: min(960px, 100% - 32px);
+  align-items: stretch;
+}

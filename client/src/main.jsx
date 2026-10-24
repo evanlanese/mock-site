@@ -9,7 +9,12 @@ const redirectUri = import.meta.env.VITE_WORKOS_REDIRECT_URI;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthKitProvider clientId={clientId} redirectUri={redirectUri}>
+    <AuthKitProvider
+      clientId={clientId}
+      redirectUri={redirectUri}
+      // Land on the widgets page after every sign-in
+      onRedirectCallback={() => window.history.replaceState({}, '', '/widgets')}
+    >
       <App />
     </AuthKitProvider>
   </StrictMode>
