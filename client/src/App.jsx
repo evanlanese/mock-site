@@ -15,10 +15,24 @@ const WIDGETS = [
 
 function HomePage() {
   return (
-    <nav className="options">
-      <a className="option" href="/widgets">Widget setup</a>
-      <button className="option" disabled>Backend setup (coming soon)</button>
-    </nav>
+    <section className="page">
+      <div>
+        <h1>Manage your workspace</h1>
+        <p className="muted">Choose how members of your organization are managed.</p>
+      </div>
+      <div className="cards">
+        <a className="card" href="/widgets">
+          <h2>Widget setup</h2>
+          <p>WorkOS AuthKit widgets embedded in the app. No backend required.</p>
+          <span className="badge active">Available</span>
+        </a>
+        <div className="card disabled" aria-disabled="true">
+          <h2>Backend setup</h2>
+          <p>Custom permissions enforced by our own API.</p>
+          <span className="badge">Coming soon</span>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -27,18 +41,34 @@ function WidgetsPage() {
 
   return (
     <section className="page">
-      <h2>AuthKit widgets</h2>
-      <p>Organization: {organizationId ?? 'none'} · Role: {role ?? 'none'}</p>
-      <button disabled>Switch organization</button>
-      <ul className="widgets">
-        {WIDGETS.map((widget) => (
-          <li key={widget.name}>
-            {widget.href ? <a href={widget.href}>{widget.name}</a> : <button disabled>{widget.name}</button>}
-            <span>{widget.description}</span>
-          </li>
-        ))}
-      </ul>
-      <a href="/">Back to home</a>
+      <a className="back-link" href="/">← Home</a>
+      <div className="page-header">
+        <div>
+          <h1>AuthKit widgets</h1>
+          <div className="chips">
+            <span className="chip">Organization: {organizationId ?? 'none'}</span>
+            <span className="chip">Role: {role ?? 'none'}</span>
+          </div>
+        </div>
+        <button className="button secondary" disabled>Switch organization</button>
+      </div>
+      <div className="cards">
+        {WIDGETS.map((widget) =>
+          widget.href ? (
+            <a key={widget.name} className="card" href={widget.href}>
+              <h2>{widget.name}</h2>
+              <p>{widget.description}</p>
+              <span className="badge active">Open</span>
+            </a>
+          ) : (
+            <div key={widget.name} className="card disabled" aria-disabled="true">
+              <h2>{widget.name}</h2>
+              <p>{widget.description}</p>
+              <span className="badge">Coming soon</span>
+            </div>
+          )
+        )}
+      </div>
     </section>
   );
 }
@@ -65,37 +95,29 @@ function App() {
     }
   }, [path, isLoading, user, signIn]);
 
-  if (isLoading) {
-    return (
-      <main className="app">
-        <h1>Mock-Site Flow State</h1>
-        <p>Loading...</p>
-      </main>
-    );
-  }
-
   let page = <HomePage />;
-  if (user && path === '/widgets') page = <WidgetsPage />;
-  if (user && path === '/user-management') page = <UserManagementPage />;
+  if (isLoading) page = <p className="muted">Loading...</p>;
+  else if (user && path === '/widgets') page = <WidgetsPage />;
+  else if (user && path === '/user-management') page = <UserManagementPage />;
 
   return (
-    <main className="app">
-      <h1>Mock-Site Flow State</h1>
-      <p>API status: {apiStatus}</p>
-
-      {user ? (
-        <div>
-          <p>Welcome, {user.firstName ?? user.email}!</p>
-          <button onClick={() => signOut({ returnTo: window.location.origin })}>Sign Out</button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={() => signIn()}>Sign In</button>
-        </div>
-      )}
-
-      {page}
-    </main>
+    <div className="layout">
+      <header className="header">
+        <a className="brand" href="/">Mock-Site Flow State</a>
+        {isLoading ? null : user ? (
+          <div className="account">
+            <span>{user.firstName ?? user.email}</span>
+            <button className="button secondary" onClick={() => signOut({ returnTo: window.location.origin })}>
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <button className="button" onClick={() => signIn()}>Sign in</button>
+        )}
+      </header>
+      <main className="main">{page}</main>
+      <footer className="footer">API status: {apiStatus}</footer>
+    </div>
   );
 }
 

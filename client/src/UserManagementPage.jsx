@@ -10,19 +10,25 @@ function UserManagementPage() {
   const { organizationId, permissions, getAccessToken } = useAuth();
 
   return (
-    <section className="page widget-page">
-      <a href="/widgets">Back to widgets</a>
-      {permissions.includes(MANAGE_USERS) ? (
-        <WorkOsWidgets>
-          <UsersManagement authToken={getAccessToken} />
-        </WorkOsWidgets>
-      ) : (
-        <p>
-          {organizationId
-            ? "You don't have permission to manage users in this organization."
-            : 'Your account is not part of an organization yet.'}
-        </p>
-      )}
+    <section className="page">
+      <a className="back-link" href="/widgets">← AuthKit widgets</a>
+      <div>
+        <h1>User management</h1>
+        <p className="muted">See who is in your organization and invite colleagues.</p>
+      </div>
+      <div className="panel">
+        {permissions.includes(MANAGE_USERS) ? (
+          <WorkOsWidgets>
+            <UsersManagement authToken={getAccessToken} />
+          </WorkOsWidgets>
+        ) : (
+          <p className="muted">
+            {organizationId
+              ? "You don't have permission to manage users in this organization."
+              : 'Your account is not part of an organization yet.'}
+          </p>
+        )}
+      </div>
     </section>
   );
 }
