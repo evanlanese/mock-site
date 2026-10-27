@@ -1,5 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@workos-inc/authkit-react';
+import { OrganizationSwitcher, WorkOsWidgets } from '@workos-inc/widgets';
+import '@radix-ui/themes/styles.css';
+import '@workos-inc/widgets/styles.css';
 import UserManagementPage from './UserManagementPage.jsx';
 
 const PROTECTED_PATHS = ['/widgets', '/user-management'];
@@ -37,7 +40,7 @@ function HomePage() {
 }
 
 function WidgetsPage() {
-  const { organizationId, role } = useAuth();
+  const { organizationId, role, getAccessToken, switchToOrganization } = useAuth();
 
   return (
     <section className="page">
@@ -50,7 +53,9 @@ function WidgetsPage() {
             <span className="chip">Role: {role ?? 'none'}</span>
           </div>
         </div>
-        <button className="button secondary" disabled>Switch organization</button>
+        <WorkOsWidgets>
+          <OrganizationSwitcher authToken={getAccessToken} switchToOrganization={switchToOrganization} />
+        </WorkOsWidgets>
       </div>
       <div className="cards">
         {WIDGETS.map((widget) =>
