@@ -4,8 +4,9 @@ import { OrganizationSwitcher, WorkOsWidgets } from '@workos-inc/widgets';
 import '@radix-ui/themes/styles.css';
 import '@workos-inc/widgets/styles.css';
 import UserManagementPage from './UserManagementPage.jsx';
+import MembersPage from './MembersPage.jsx';
 
-const PROTECTED_PATHS = ['/widgets', '/user-management'];
+const PROTECTED_PATHS = ['/widgets', '/user-management', '/members'];
 
 // AuthKit widgets; only those with an href are enabled for now
 const WIDGETS = [
@@ -29,11 +30,11 @@ function HomePage() {
           <p>WorkOS AuthKit widgets embedded in the app. No backend required.</p>
           <span className="badge active">Available</span>
         </a>
-        <div className="card disabled" aria-disabled="true">
+        <a className="card" href="/members">
           <h2>Backend setup</h2>
           <p>Custom permissions enforced by our own API.</p>
-          <span className="badge">Coming soon</span>
-        </div>
+          <span className="badge active">Available</span>
+        </a>
       </div>
     </section>
   );
@@ -104,6 +105,7 @@ function App() {
   if (isLoading) page = <p className="muted">Loading...</p>;
   else if (user && path === '/widgets') page = <WidgetsPage />;
   else if (user && path === '/user-management') page = <UserManagementPage />;
+  else if (user && path === '/members') page = <MembersPage />;
 
   return (
     <div className="layout">
